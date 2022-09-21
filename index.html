@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="list">
+        <p style="color: white;">Ваш список:</p>
+        <span class="listSpan"></span>
+    </div>
+
+    <div class="operations">
+        <p style="color: white;">Операции:</p>
+        <div class="buttonsContainer"></div>
+    </div>
+
+    <div class="modalWindow">
+        <div class="modalWindow_closeModal">X</div>
+
+        <p class="modalWindow_msg1_header"></p>
+        <input type="number" class="modalWindow_msg1_input" name="msg1_input" cols="30" rows="1"></textarea>
+
+        <p class="modalWindow_msg2_header"></p>
+        <input type="number" class="modalWindow_msg2_input" name="msg2_input" cols="30" rows="1"></textarea>
+
+        <button class="modalWindow_action"></button>
+    </div>
+
+    <div class="dialog"></div>
+</body>
+<script src="list.js"></script>
+<script src="main.js"></script>
+</html>
