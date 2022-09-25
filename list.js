@@ -289,14 +289,8 @@ class List {
 
         const newListValue = newList.getList();
 
-        let newListNode = newList.head;
-
         if (this.head === null) {
-            while (newListNode !== null) {
-                this.append(newListNode.value, false);
-    
-                newListNode = newListNode.next;
-            }
+            this.head = newList.head;
 
             this.dialog.show(`Новый список (${newListValue}) успешно добавлен в начало основного`);
 
