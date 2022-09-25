@@ -47,12 +47,46 @@ class Main {
         }
     }
 
+    validateInput = (event) => {
+        console.log(event.target.value)
+        event.target.value = event.target.value.replace(/[^\d]/g, "");
+    }
+
     initWindowComponents = () => {
         this.modalWindowComponents.modalHeader1 = document.querySelector('.modalWindow_msg1_header');
         this.modalWindowComponents.modalHeader2 = document.querySelector('.modalWindow_msg2_header');
-        this.modalWindowComponents.modalInput1 = document.querySelector('.modalWindow_msg1_input');
-        this.modalWindowComponents.modalInput2 = document.querySelector('.modalWindow_msg2_input');
         this.modalWindowComponents.modalButton = document.querySelector('.modalWindow_action');
+
+        const modalInput1 = document.querySelector('.modalWindow_msg1_input');
+        const modalInput2 = document.querySelector('.modalWindow_msg2_input');
+
+        modalInput1.onpaste = (e) => {
+            e.preventDefault();
+        }
+
+        modalInput2.onpaste = (e) => {
+            e.preventDefault();
+        }
+
+        modalInput1.oninput = (e) => {
+            const value = Number(e.data);
+
+            if (!Number.isInteger(value)) {
+                debugger
+                e.target.value = e.target.value.slice(0, -1);
+            }
+        }
+
+        modalInput2.oninput = (e) => {
+            const value = Number(e.data);
+
+            if (!Number.isInteger(value)) {
+                e.target.value = e.target.value.slice(0, -1);
+            }
+        }
+
+        this.modalWindowComponents.modalInput1 = modalInput1;
+        this.modalWindowComponents.modalInput2 = modalInput2; 
     }
 
     handleCommonClick = (methodName) => {
