@@ -27,7 +27,6 @@ class List {
         this.onChangeListFN = callback;
 
         this._head = null;
-        this._tail = null;
 
         this.dialog = new Dialog();
     }
@@ -41,23 +40,10 @@ class List {
         this.onChangeListFN();
     }
 
-    get tail () {
-        return this._tail;
-    }
-
-    set tail (value) {
-        this._tail = value;
-        this.onChangeListFN();
-    }
-
     prepend (value) {
         const newNode = new ListNode(value, this.head);
 
         this.head = newNode;
-
-        if (!this.tail) {
-            this.tail = newNode;
-        }
 
         this.dialog.show('Значение добавлено успешно')
     }
@@ -65,42 +51,54 @@ class List {
     append (value, needMessage = true) {
         const newNode = new ListNode(value);
 
-        if (!this.head || !this.tail) {
+        if (!this.head) {
             this.head = newNode;
-            this.tail = newNode;
 
             needMessage && this.dialog.show('Значение добавлено успешно');
             return;
         }
 
-        this.tail.next = newNode;
-        this.tail = newNode;
-        needMessage && this.dialog.show('Значение добавлено успешно');
+        let tempNode = this.head;
+
+        while (tempNode.next !== null) {
+            tempNode = tempNode.next;
+        }
+
+        tempNode.next = newNode;
+
+        this.onChangeListFN();
+
+        if (needMessage) {
+            this.dialog.show('Значение добавлено успешно');
+        }
     }
 
     deleteLast () {
-        if (!this.tail) {
-            this.dialog.show('Элемент не найден', true);
+        if (this.head === null) {
+            this.dialog.show('Список пуст', true);
             return;
         }
 
-        if (this.head === this.tail) {
+        if (this.head.next === null) {
             this.head = null;
-            this.tail = null;
+            this.dialog.show('Значение удалено успешно');
+
+            return;
         }
 
-        let currentNode = this.head;
+        let prelastNode = this.head;
 
-        while (currentNode && currentNode.next) {
-            if (!currentNode.next.next) {
-                currentNode.next = null;
+        while (prelastNode.next !== null) {
+            if (prelastNode.next.next === null) {
+                prelastNode.next = null;
             }
             else {
-                currentNode = currentNode.next;
+                prelastNode = prelastNode.next;
             }
         }
 
-        this.tail = currentNode;
+        this.onChangeListFN();
+
         this.dialog.show('Значение удалено успешно');
     }
 
@@ -115,7 +113,6 @@ class List {
         }
         else {
             this.head = null;
-            this.tail = null;
         }
 
         this.dialog.show('Значение удалено успешно');
@@ -180,8 +177,6 @@ class List {
             this.head = node;
         }
 
-        this.tail = null;
-
         this.dialog.show('Список очищен');
     }
 
@@ -226,8 +221,6 @@ class List {
         }
 
         let node = this.head;
-
-        console.log(this.head)
 
         let current = this.head;
 
@@ -276,24 +269,64 @@ class List {
         this.onChangeListFN()
     }
 
-    appendList () {
+    reverseList (list) {
+        let reversedList = null;
+
+        for (let node = list; node !== null; node = node.next) {
+            node.next = reversedList;
+            reversedList = node;
+        }
+
+        return reversedList;
+    }
+
+    prependList () {
         let newList = new List(() => {});
 
-        for (let i = 0; i < 10; i++) {
-            newList.append(Math.floor(Math.random() * 10));
+        for (let i = 0; i < 5; i++) {
+            newList.append(Math.floor(Math.random() * 10), false);
         }
+
+        const newListValue = newList.getList();
 
         let newListNode = newList.head;
 
-        while (newListNode !== null) {
-            this.append(newListNode.value, false);
+        if (this.head === null) {
+            while (newListNode !== null) {
+                this.append(newListNode.value, false);
+    
+                newListNode = newListNode.next;
+            }
 
-            newListNode = newListNode.next;
+            this.dialog.show(`Новый список (${newListValue}) успешно добавлен в начало основного`);
+
+            return;
+        }
+
+        let current = newList.head;
+        let prev = null;
+        let next = null;
+
+        while (current !== null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        newList.head = prev;
+
+        let reversedListNode = newList.head;
+
+        while (reversedListNode !== null) {
+            this.prepend(reversedListNode.value, false);
+
+            reversedListNode = reversedListNode.next;
         }
 
         newList = null;
 
-        this.dialog.show('Новый список успешно добавлен в конец основного');
+        this.dialog.show(`Новый список (${newListValue}) успешно добавлен в начало основного`);
     }
 
     methodsOptions = {
@@ -308,6 +341,6 @@ class List {
         'removeElemByIndex': {name: 'Удалить элемент по индексу', modal: true, header: 'Укажите номер элемента:', action: 'Удалить'}, //
         'updateElemByIndex': {name: 'Заменить элемент по индексу', modal: true, header: 'Укажите номер элемента:', header2: 'Укажите значение элемента:', action: 'Обновить'}, //
         'clearList': {name: 'Очистить список', modal: false},
-        'appendList': {name: 'Добавить список в конец', modal: false}
+        'prependList': {name: 'Добавить список в начало', modal: false}
     }
 }

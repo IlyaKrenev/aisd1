@@ -4,7 +4,16 @@ class Main {
         this.modalWindow = document.querySelector('.modalWindow');
         this.linkedList = new List(this.updateListValue);
 
+        this.modalWindowComponents = {
+            modalHeader1: null,
+            modalHeader2: null,
+            modalInput1: null,
+            modalInput2: null,
+            modalButton: null
+        }
+
         this.initButtons();
+        this.initWindowComponents();
     }
 
     updateListValue = () => {
@@ -38,23 +47,30 @@ class Main {
         }
     }
 
+    initWindowComponents = () => {
+        this.modalWindowComponents.modalHeader1 = document.querySelector('.modalWindow_msg1_header');
+        this.modalWindowComponents.modalHeader2 = document.querySelector('.modalWindow_msg2_header');
+        this.modalWindowComponents.modalInput1 = document.querySelector('.modalWindow_msg1_input');
+        this.modalWindowComponents.modalInput2 = document.querySelector('.modalWindow_msg2_input');
+        this.modalWindowComponents.modalButton = document.querySelector('.modalWindow_action');
+    }
+
     handleCommonClick = (methodName) => {
         this.linkedList[methodName]();
+    }
+
+    clearInputs = () => {
+        this.modalWindowComponents.modalInput1.value = '';
+        this.modalWindowComponents.modalInput2.value = '';
     }
 
     openModal = (methodName, methodsOptions) => {
         this.showElement(this.modalWindow, true);
 
         const {header: methodHeader1, header2: methodHeader2, action: methodAction} = methodsOptions;
+        const {modalHeader1, modalHeader2, modalInput1, modalInput2, modalButton} = this.modalWindowComponents;
 
-        const modalHeader1 = document.querySelector('.modalWindow_msg1_header');
-        const modalHeader2 = document.querySelector('.modalWindow_msg2_header');
-        const modalInput1 = document.querySelector('.modalWindow_msg1_input');
-        const modalInput2 = document.querySelector('.modalWindow_msg2_input');
-        const modalButton = document.querySelector('.modalWindow_action');
-
-        modalInput1.value = '';
-        modalInput2.value = '';
+        this.clearInputs();
 
         modalHeader1.textContent = methodHeader1;
         modalButton.textContent = methodAction;
