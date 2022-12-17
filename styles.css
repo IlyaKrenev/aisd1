@@ -27,6 +27,13 @@ body .list, body .operations {
     display: flex;
 }
 
+.buttonsContainer:before {
+    position: absolute;
+    left: -9px;
+    bottom: 1px;
+    content: "»";
+}
+
 .buttonsContainer button {
     margin: 0px 10px;
     font-size: 12px;
