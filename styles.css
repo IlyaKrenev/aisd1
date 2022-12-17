@@ -27,13 +27,13 @@ body .list, body .operations {
     display: flex;
 }
 
-.buttonsContainer:before {
-    content: "»";
-}
-
 .buttonsContainer button {
     margin: 0px 10px;
     font-size: 12px;
+}
+
+.buttonsContainer button:before {
+    content: "»";
 }
 
 .modalWindow {
