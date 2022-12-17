@@ -28,9 +28,6 @@ body .list, body .operations {
 }
 
 .buttonsContainer:before {
-    position: absolute;
-    left: -9px;
-    bottom: 1px;
     content: "»";
 }
 
